@@ -4,13 +4,14 @@ import { Model } from 'mongoose';
 export type TUser = {
   name: string;
   email: string;
+  phone: string;
   password: string;
 };
 
 // creating custom statics method
 export interface UserStaticModel extends Model<TUser> {
   //instance methods for checking if the user exist
-  isUserExistsByEmail(id: string): Promise<TUser | null>;
+  isUserExistsByEmailOrNumber(id: string): Promise<TUser | null>;
 
   //instance methods for checking if passwords are matched
   isPasswordMatched(

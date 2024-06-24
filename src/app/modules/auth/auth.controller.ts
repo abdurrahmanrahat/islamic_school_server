@@ -9,12 +9,6 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 
   const result = await AuthServices.loginUserIntoDb(loggedInUser);
 
-  res.status(201).json({
-    success: true,
-    message: 'User login successfully',
-    token: result,
-  });
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

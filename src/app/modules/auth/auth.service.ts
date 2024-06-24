@@ -6,9 +6,11 @@ import { createJwtToken } from './auth.utils';
 // post
 const loginUserIntoDb = async (payload: TLoginUser) => {
   // check if user already exists or not
-  const existingUser = await UserModel.isUserExistsByEmail(payload.email);
+  const existingUser = await UserModel.isUserExistsByEmailOrNumber(
+    payload.email,
+  );
   if (!existingUser) {
-    throw new Error('Invalid email');
+    throw new Error('Invalid email or number');
   }
 
   // compare hashed password

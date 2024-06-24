@@ -6,12 +6,17 @@ import { TUser, UserStaticModel } from './user.interface';
 const userSchema = new Schema<TUser, UserStaticModel>({
   name: { type: String, required: true },
   email: { type: String, required: true },
+  phone: { type: String, required: true },
   password: { type: String, required: true },
 });
 
 // check user exists or not
-userSchema.statics.isUserExistsByEmail = async function (email: string) {
-  const existingUser = await UserModel.findOne({ email });
+userSchema.statics.isUserExistsByEmailOrNumber = async function (
+  email: string,
+) {
+  const existingUser = await UserModel.findOne({
+    $or: [{ email: email }, { phone: email }],
+  });
   return existingUser;
 };
 
