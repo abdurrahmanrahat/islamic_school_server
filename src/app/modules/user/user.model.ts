@@ -8,6 +8,11 @@ const userSchema = new Schema<TUser, UserStaticModel>({
   email: { type: String, required: true },
   phone: { type: String, required: true },
   password: { type: String, required: true },
+  role: {
+    type: String,
+    enum: ['user', 'instructor', 'admin'],
+    default: 'user',
+  },
 });
 
 // check user exists or not

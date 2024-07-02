@@ -6,6 +6,7 @@ export type TUser = {
   email: string;
   phone: string;
   password: string;
+  role: 'user' | 'instructor' | 'admin';
 };
 
 // creating custom statics method
