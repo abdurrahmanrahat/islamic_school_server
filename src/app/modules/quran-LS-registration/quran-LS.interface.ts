@@ -1,4 +1,4 @@
-export type TQuranCourseUser = {
+export type TQuranLSUser = {
   userName: string;
   userEmail: string;
   userGender: 'male' | 'female';
@@ -7,4 +7,7 @@ export type TQuranCourseUser = {
   address: string;
   phoneNumber: string;
   whatsAppNumber: string;
+  batchNo: 'quran-LS-2';
 };
+
+// LS = learning session

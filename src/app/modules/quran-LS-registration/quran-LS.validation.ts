@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const createQuranCourseUserValidationSchema = z.object({
+const createQuranLSUserValidationSchema = z.object({
   body: z.object({
     userName: z.string().min(2, 'Name must be at least 2 characters long'),
     userEmail: z.string().email('Invalid email format'),
@@ -17,6 +17,6 @@ const createQuranCourseUserValidationSchema = z.object({
   }),
 });
 
-export const QuranCourseUserValidations = {
-  createQuranCourseUserValidationSchema,
+export const QuranLSUserValidations = {
+  createQuranLSUserValidationSchema,
 };
