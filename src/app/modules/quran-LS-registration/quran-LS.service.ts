@@ -7,6 +7,13 @@ const createQuranLSUserIntoDb = async (userInfo: TQuranLSUser) => {
   return result;
 };
 
+// get
+const getQuranLSUsersFromDb = async () => {
+  const result = await QuranLSUser.find();
+  return result;
+};
+
 export const QuranLSUserServices = {
   createQuranLSUserIntoDb,
+  getQuranLSUsersFromDb,
 };

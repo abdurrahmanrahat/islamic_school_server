@@ -11,4 +11,6 @@ router.post(
   QuranLSUserControllers.createQuranLSUser,
 );
 
+router.get('/', QuranLSUserControllers.getAllQuranLSUsers);
+
 export const QuranLSUserRoutes = router;
