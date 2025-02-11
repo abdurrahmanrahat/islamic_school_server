@@ -9,10 +9,6 @@ const QuranLSUserSchema = new Schema<TQuranLSUser>(
     dateOfBirth: {
       type: String,
       required: true,
-      validate: {
-        validator: (date: string) => !isNaN(Date.parse(date)),
-        message: 'Invalid date format',
-      },
     },
     profession: { type: String, required: true },
     address: { type: String, required: true },
