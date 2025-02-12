@@ -8,6 +8,8 @@ export type TQuranLSUser = {
   phoneNumber: string;
   whatsAppNumber: string;
   batchNo: 'quran-LS-2';
+  paymentMethod: string;
+  RegFeeNumber: string;
 };
 
 // LS = learning session

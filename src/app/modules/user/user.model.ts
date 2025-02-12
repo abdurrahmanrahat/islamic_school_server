@@ -5,7 +5,7 @@ import { TUser, UserStaticModel } from './user.interface';
 
 const userSchema = new Schema<TUser, UserStaticModel>({
   name: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   phone: { type: String, required: true },
   password: { type: String, required: true },
   role: {

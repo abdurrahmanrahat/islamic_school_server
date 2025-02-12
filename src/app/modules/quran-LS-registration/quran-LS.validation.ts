@@ -12,6 +12,8 @@ const createQuranLSUserValidationSchema = z.object({
     whatsAppNumber: z
       .string()
       .min(11, 'WhatsApp number must be at least 11 digits'),
+    paymentMethod: z.string(),
+    RegFeeNumber: z.string(),
   }),
 });
 

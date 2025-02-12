@@ -15,6 +15,8 @@ const QuranLSUserSchema = new Schema<TQuranLSUser>(
     phoneNumber: { type: String, required: true, minlength: 11 },
     whatsAppNumber: { type: String, required: true, minlength: 11 },
     batchNo: { type: String, default: 'quran-LS-2' },
+    paymentMethod: { type: String, required: true },
+    RegFeeNumber: { type: String, required: true },
   },
   { timestamps: true },
 );
