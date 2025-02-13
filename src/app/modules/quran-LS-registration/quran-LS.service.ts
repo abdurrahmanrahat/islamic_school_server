@@ -13,7 +13,20 @@ const getQuranLSUsersFromDb = async () => {
   return result;
 };
 
+// update
+const updateQuranLSUsersIntoDb = async (
+  studentId: string,
+  body: Partial<TQuranLSUser>,
+) => {
+  const result = await QuranLSUser.findOneAndUpdate({ _id: studentId }, body, {
+    new: true,
+  });
+
+  return result;
+};
+
 export const QuranLSUserServices = {
   createQuranLSUserIntoDb,
   getQuranLSUsersFromDb,
+  updateQuranLSUsersIntoDb,
 };

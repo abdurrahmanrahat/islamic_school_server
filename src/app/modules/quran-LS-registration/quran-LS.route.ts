@@ -13,4 +13,10 @@ router.post(
 
 router.get('/', QuranLSUserControllers.getAllQuranLSUsers);
 
+router.patch(
+  '/:studentId',
+  ValidateRequest(QuranLSUserValidations.updateQuranLSUserValidationSchema),
+  QuranLSUserControllers.updateQuranLSUser,
+);
+
 export const QuranLSUserRoutes = router;

@@ -28,7 +28,24 @@ const getAllQuranLSUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateQuranLSUser = catchAsync(async (req: Request, res: Response) => {
+  const { studentId } = req.params;
+
+  const result = await QuranLSUserServices.updateQuranLSUsersIntoDb(
+    studentId,
+    req.body,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User status updated successfully',
+    data: result,
+  });
+});
+
 export const QuranLSUserControllers = {
   createQuranLSUser,
   getAllQuranLSUsers,
+  updateQuranLSUser,
 };
