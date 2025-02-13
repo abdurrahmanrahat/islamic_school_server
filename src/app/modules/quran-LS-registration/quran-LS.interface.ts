@@ -10,6 +10,7 @@ export type TQuranLSUser = {
   batchNo: 'quran-LS-2';
   paymentMethod: string;
   RegFeeNumber: string;
+  status: 'default' | 'completed' | 'waiting';
 };
 
 // LS = learning session

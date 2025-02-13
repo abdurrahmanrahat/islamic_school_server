@@ -17,6 +17,11 @@ const QuranLSUserSchema = new Schema<TQuranLSUser>(
     batchNo: { type: String, default: 'quran-LS-2' },
     paymentMethod: { type: String, required: true },
     RegFeeNumber: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ['default', 'completed', 'waiting'],
+      default: 'default',
+    },
   },
   { timestamps: true },
 );
