@@ -18,7 +18,7 @@ const createQuranLSUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllQuranLSUsers = catchAsync(async (req: Request, res: Response) => {
-  const result = await QuranLSUserServices.getQuranLSUsersFromDb();
+  const result = await QuranLSUserServices.getQuranLSUsersFromDb(req.query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

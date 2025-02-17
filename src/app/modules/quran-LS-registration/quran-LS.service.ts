@@ -1,3 +1,5 @@
+import QueryBuilder from '../../builder/QueryBuilder';
+import { quranLSUserSearchableFields } from './quran-LS.constant';
 import { TQuranLSUser } from './quran-LS.interface';
 import { QuranLSUser } from './quran-LS.model';
 
@@ -8,9 +10,16 @@ const createQuranLSUserIntoDb = async (userInfo: TQuranLSUser) => {
 };
 
 // get
-const getQuranLSUsersFromDb = async () => {
-  const result = await QuranLSUser.find();
-  return result;
+const getQuranLSUsersFromDb = async (query: Record<string, unknown>) => {
+  const quranLSUserQuery = new QueryBuilder(QuranLSUser.find(), query)
+    .search(quranLSUserSearchableFields)
+    .filter();
+
+  const data = await quranLSUserQuery.modelQuery;
+
+  const document = await QuranLSUser.find();
+  const totalCount = document?.length;
+  return { data, totalCount };
 };
 
 // update
