@@ -34,8 +34,15 @@ const updateQuranLSUsersIntoDb = async (
   return result;
 };
 
+// delete
+const deleteQuranLSUserIntoDb = async (studentId: string) => {
+  const result = await QuranLSUser.findByIdAndDelete({ _id: studentId });
+  return result;
+};
+
 export const QuranLSUserServices = {
   createQuranLSUserIntoDb,
   getQuranLSUsersFromDb,
   updateQuranLSUsersIntoDb,
+  deleteQuranLSUserIntoDb,
 };

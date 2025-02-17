@@ -44,8 +44,21 @@ const updateQuranLSUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteQuranLSUser = catchAsync(async (req: Request, res: Response) => {
+  const { studentId } = req.params;
+  const result = await QuranLSUserServices.deleteQuranLSUserIntoDb(studentId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student deleted successfully',
+    data: result,
+  });
+});
+
 export const QuranLSUserControllers = {
   createQuranLSUser,
   getAllQuranLSUsers,
   updateQuranLSUser,
+  deleteQuranLSUser,
 };

@@ -19,4 +19,6 @@ router.patch(
   QuranLSUserControllers.updateQuranLSUser,
 );
 
+router.delete('/:studentId', QuranLSUserControllers.deleteQuranLSUser);
+
 export const QuranLSUserRoutes = router;
