@@ -21,4 +21,6 @@ router.patch(
 
 router.delete('/:studentId', QuranLSUserControllers.deleteQuranLSUser);
 
+// router.get('/download-pdf', QuranLSUserControllers.makePDFQuranLSUser);
+
 export const QuranLSUserRoutes = router;

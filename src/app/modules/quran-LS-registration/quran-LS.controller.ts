@@ -56,6 +56,10 @@ const deleteQuranLSUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// const makePDFQuranLSUser = catchAsync(async (req: Request, res: Response) => {
+//   await QuranLSUserServices.makePdfQuranLSUsersFromDb(res);
+// });
+
 export const QuranLSUserControllers = {
   createQuranLSUser,
   getAllQuranLSUsers,
