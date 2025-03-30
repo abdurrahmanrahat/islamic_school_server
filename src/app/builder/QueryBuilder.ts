@@ -24,11 +24,29 @@ class QueryBuilder<T> {
     return this;
   }
 
+  // filter() {
+  //   const queryObj = { ...this.query };
+
+  //   const excludeFields = ['searchTerm', 'page', 'limit'];
+  //   excludeFields.forEach((item) => delete queryObj[item]);
+
+  //   this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
+
+  //   return this;
+  // }
   filter() {
     const queryObj = { ...this.query };
 
     const excludeFields = ['searchTerm', 'page', 'limit'];
     excludeFields.forEach((item) => delete queryObj[item]);
+
+    // Make sure all filter values are case-insensitive
+    Object.keys(queryObj).forEach((key) => {
+      if (typeof queryObj[key] === 'string') {
+        // Using regex with 'i' for case-insensitive search
+        queryObj[key] = { $regex: new RegExp(queryObj[key], 'i') };
+      }
+    });
 
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
 
