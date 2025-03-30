@@ -42,9 +42,11 @@ class QueryBuilder<T> {
 
     // Make sure all filter values are case-insensitive
     Object.keys(queryObj).forEach((key) => {
-      if (typeof queryObj[key] === 'string') {
+      const value = queryObj[key];
+
+      if (typeof value === 'string') {
         // Using regex with 'i' for case-insensitive search
-        queryObj[key] = { $regex: new RegExp(queryObj[key], 'i') };
+        queryObj[key] = { $regex: new RegExp(value, 'i') };
       }
     });
 
