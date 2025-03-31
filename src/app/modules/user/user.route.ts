@@ -11,4 +11,6 @@ router.post(
   UserControllers.createUser,
 );
 
+router.get('/current-user/:email', UserControllers.getCurrentUserByEmail);
+
 export const UserRoutes = router;

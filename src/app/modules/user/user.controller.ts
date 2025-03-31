@@ -17,6 +17,31 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getCurrentUserByEmail = catchAsync(
+  async (req: Request, res: Response) => {
+    const { email } = req.params;
+
+    const result = await UserServices.getCurrentUserByEmailFromDb(email);
+
+    if (result) {
+      sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Current user retrieved successfully',
+        data: result,
+      });
+    } else {
+      sendResponse(res, {
+        statusCode: httpStatus.NOT_FOUND,
+        success: false,
+        message: 'User has not found',
+        data: result,
+      });
+    }
+  },
+);
+
 export const UserControllers = {
   createUser,
+  getCurrentUserByEmail,
 };

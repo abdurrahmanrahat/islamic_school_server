@@ -14,10 +14,9 @@ const getBlogsFromDb = async (query: Record<string, unknown>) => {
     .filter()
     .pagination();
 
-  const data = await blogQuery.modelQuery.populate(
-    'authorDetails',
-    '_id name email phone photoURL',
-  );
+  const data = await blogQuery.modelQuery
+    .sort({ createdAt: -1 })
+    .populate('authorDetails', '_id name email phone photoURL');
 
   // for count document except pagination.
   const blogQueryWithoutPagination = new QueryBuilder(Blog.find(), query)
