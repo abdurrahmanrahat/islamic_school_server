@@ -4,6 +4,7 @@ import { BkashRoutes } from '../modules/bkash/bkash.route';
 import { BlogRoutes } from '../modules/blog/blog.route';
 import { CourseRoutes } from '../modules/course/course.route';
 import { PaymentRoutes } from '../modules/payment/payment.route';
+import { QuranLCBasicRoutes } from '../modules/quran-lc-basic/quran-lc-basic.route';
 import { QuranLSUserRoutes } from '../modules/quran-LS-registration/quran-LS.route';
 import { UserRoutes } from '../modules/user/user.route';
 
@@ -23,6 +24,10 @@ const moduleRoutes = [
   {
     path: '/quran-ls-registration',
     route: QuranLSUserRoutes,
+  },
+  {
+    path: '/quran-lc-basic',
+    route: QuranLCBasicRoutes,
   },
   {
     path: '/payments',
