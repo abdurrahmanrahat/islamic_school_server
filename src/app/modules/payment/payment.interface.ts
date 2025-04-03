@@ -1,8 +1,8 @@
 export type TPayment = {
-  userID: string;
-  amount: number;
+  paymentID: string;
   trxID: string;
-  paymentMethod: 'bkash' | 'nagad';
-  status?: 'Pending' | 'Completed' | 'Failed'; // Add other status types if needed
-  callBackUrl?: string;
+  amount: string;
+  paymentExecuteTime: string;
+  payerAccount: string;
+  isRefund?: boolean;
 };

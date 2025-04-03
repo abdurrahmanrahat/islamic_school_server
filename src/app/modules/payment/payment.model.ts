@@ -1,17 +1,16 @@
-import mongoose, { model } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { TPayment } from './payment.interface';
 
-const PaymentSchema = new mongoose.Schema(
+const PaymentSchema = new Schema<TPayment>(
   {
-    userID: { type: String, required: true },
-    amount: { type: Number, required: true },
-    trxID: { type: String, unique: true, required: true },
-    paymentMethod: { type: String, required: true },
-    status: { type: String, default: 'Pending' },
-    callBackUrl: { type: String },
+    paymentID: { type: String, required: true, unique: true },
+    trxID: { type: String, required: true, unique: true },
+    amount: { type: String, required: true },
+    paymentExecuteTime: { type: String, required: true },
+    payerAccount: { type: String, required: true },
+    isRefund: { type: Boolean, default: false },
   },
   { timestamps: true },
 );
 
-// model
 export const Payment = model<TPayment>('Payment', PaymentSchema);
