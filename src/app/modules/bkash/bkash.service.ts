@@ -106,13 +106,17 @@ const useRefreshToken = async (refreshToken: string): Promise<string> => {
 };
 
 // Create Payment
-const createPayment = async (amount: number, orderId: string) => {
+const createPayment = async (
+  amount: number,
+  orderId: string,
+  studentRegisterId: string,
+) => {
   const token = await getValidToken();
 
   const payload = {
     mode: '0011',
     payerReference: ' ',
-    callbackURL: 'http://localhost:5000/api/v1/bkash/callback',
+    callbackURL: `${config.backed_live_url}/bkash/callback?studentRegisterId=${studentRegisterId}`,
     merchantAssociationInfo: 'MI05MID54RF09123456One',
     amount: amount,
     currency: 'BDT',
@@ -160,6 +164,7 @@ const callbackPayment = async (paymentID: string) => {
     payerAccount: response.data.payerAccount,
     isRefund: false,
   };
+
   await Payment.create(paymentInfo);
 
   return response.data;

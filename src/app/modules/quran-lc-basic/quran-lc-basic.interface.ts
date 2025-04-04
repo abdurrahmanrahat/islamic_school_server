@@ -7,6 +7,7 @@ export type TQuranLCBasic = {
   address: string;
   phoneNumber: string;
   whatsAppNumber: string;
+  batchNo: string;
   paymentStatus?: 'pending' | 'success' | 'cancel';
   isDeleted?: boolean;
 };

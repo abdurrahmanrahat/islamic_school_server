@@ -18,6 +18,7 @@ const createQuranLCBasicValidationSchema = z.object({
     address: z.string().min(1, 'Address is required'),
     phoneNumber: z.string().min(1, 'Phone number is required'),
     whatsAppNumber: z.string().min(1, 'WhatsApp number is required'),
+    batchNo: z.string().min(1, 'Batch no is required'),
     paymentStatus: z.enum(['pending', 'success', 'cancel']).optional(),
   }),
 });
@@ -32,6 +33,7 @@ const updateQuranLCBasicValidationSchema = z.object({
     address: z.string().optional(),
     phoneNumber: z.string().optional(),
     whatsAppNumber: z.string().optional(),
+    batchNo: z.string().min(1, 'Batch no is required').optional(),
     paymentStatus: z.enum(['pending', 'success', 'cancel']).optional(),
   }),
 });

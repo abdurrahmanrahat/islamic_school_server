@@ -1,13 +1,18 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import config from '../../config';
 import catchAsync from '../../utils/catchAsync';
 import { sendResponse } from '../../utils/sendResponse';
 import { BkashService } from './bkash.service';
 
 const createPayment = catchAsync(async (req: Request, res: Response) => {
-  const { amount, orderId } = req.body;
+  const { amount, orderId, studentRegisterId } = req.body;
 
-  const result = await BkashService.createPayment(amount, orderId);
+  const result = await BkashService.createPayment(
+    amount,
+    orderId,
+    studentRegisterId,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -18,7 +23,7 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
 });
 
 const callbackPayment = catchAsync(async (req: Request, res: Response) => {
-  const { paymentID, status } = req.query;
+  const { paymentID, status, studentRegisterId } = req.query;
 
   /**
 {
@@ -30,11 +35,15 @@ const callbackPayment = catchAsync(async (req: Request, res: Response) => {
   */
 
   if (!paymentID) {
-    return res.redirect('https://www.onlineislamicschool.com/payment-fail'); // ✅ Redirect to fail page
+    return res.redirect(
+      `${config.frontend_live_url}/quran-lc-basic/payment-fail`,
+    ); // ✅ Redirect to fail page
   }
 
   if (status !== 'success') {
-    return res.redirect('https://www.onlineislamicschool.com/payment-fail'); // ✅ Redirect if payment failed
+    return res.redirect(
+      `${config.frontend_live_url}/quran-lc-basic/payment-fail`,
+    ); // ✅ Redirect if payment failed
   }
 
   const result = await BkashService.callbackPayment(paymentID as string);
@@ -59,10 +68,12 @@ const callbackPayment = catchAsync(async (req: Request, res: Response) => {
 
   if (result && result.paymentID) {
     return res.redirect(
-      `https://www.onlineislamicschool.com/payment-success?paymentID=${paymentID}`,
+      `${config.frontend_live_url}/quran-lc-basic/payment-success?studentRegisterId=${studentRegisterId}&paymentID=${paymentID}`,
     ); // ✅ Redirect to success page
   } else {
-    return res.redirect('https://www.onlineislamicschool.com/payment-fail'); // ✅ Redirect if execution fails
+    return res.redirect(
+      `${config.frontend_live_url}/quran-lc-basic/payment-fail`,
+    ); // ✅ Redirect if execution fails
   }
 });
 

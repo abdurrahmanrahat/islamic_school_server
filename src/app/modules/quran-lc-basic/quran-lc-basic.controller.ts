@@ -28,9 +28,10 @@ const getAllQuranLCBasic = catchAsync(async (req: Request, res: Response) => {
 
 const getSingleQuranLCBasic = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await QuranLCBasicServices.getSingleQuranLCBasicFromDb(
-      req.params.id,
-    );
+    const { studentId } = req.params;
+
+    const result =
+      await QuranLCBasicServices.getSingleQuranLCBasicFromDb(studentId);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,

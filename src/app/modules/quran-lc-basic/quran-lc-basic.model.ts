@@ -11,6 +11,7 @@ const QuranLCBasicSchema = new Schema<TQuranLCBasic>(
     address: { type: String, required: true },
     phoneNumber: { type: String, required: true },
     whatsAppNumber: { type: String, required: true },
+    batchNo: { type: String, required: true },
     paymentStatus: {
       type: String,
       enum: ['pending', 'success', 'cancel'],

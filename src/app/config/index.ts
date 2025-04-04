@@ -21,4 +21,8 @@ export default {
   nogod_merchant_id: process.env.NAGAD_MERCHANT_ID,
   nogod_merchant_secret: process.env.NAGAD_MERCHANT_SECRET,
   nogod_callback_url: process.env.NAGAD_CALLBACK_URL,
+  frontend_live_url: process.env.FRONTEND_LIVE_URL,
+  frontend_development_url: process.env.FRONTEND_DEVELOPMENT_URL,
+  backed_live_url: process.env.BACKED_LIVE_URL,
+  backed_development_url: process.env.BACKED_DEVELOPMENT_URL,
 };
