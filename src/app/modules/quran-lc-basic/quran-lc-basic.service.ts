@@ -11,10 +11,10 @@ const createQuranLCBasicIntoDb = async (quranLCBasicInfo: TQuranLCBasic) => {
 const getQuranLCBasicsFromDb = async (query: Record<string, unknown>) => {
   const quranLCBasicQuery = new QueryBuilder(QuranLCBasic.find(), query)
     .search(quranLCBasicSearchableFields)
-    .filter()
-    .pagination();
+    .filter();
+  // .pagination();
 
-  const data = await quranLCBasicQuery.modelQuery.sort({ createdAt: -1 });
+  const data = await quranLCBasicQuery.modelQuery;
 
   // for count document except pagination.
   const quranLCBasicQueryWithoutPagination = new QueryBuilder(
