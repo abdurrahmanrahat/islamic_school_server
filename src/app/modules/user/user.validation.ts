@@ -9,6 +9,25 @@ const createUserValidationSchema = z.object({
   }),
 });
 
+const userDetailsSchema = z.object({
+  name: z.string().optional(),
+  position: z.string().optional(),
+  education: z.string().optional(),
+  photoURL: z.string().optional(),
+  yearsOfExperience: z.string().optional(),
+});
+
+const updateUserValidationSchema = z.object({
+  body: z.object({
+    name: z.string().optional(),
+    phone: z.string().optional(),
+    role: z.enum(['user', 'instructor', 'admin']).optional(),
+    isRequestPending: z.boolean().optional(),
+    details: userDetailsSchema.optional(),
+  }),
+});
+
 export const UserValidations = {
   createUserValidationSchema,
+  updateUserValidationSchema,
 };

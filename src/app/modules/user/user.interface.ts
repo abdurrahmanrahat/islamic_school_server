@@ -7,6 +7,16 @@ export type TUser = {
   phone: string;
   password: string;
   role: 'user' | 'instructor' | 'admin';
+  isRequestPending: boolean;
+  details?: Partial<TUserDetails> | object;
+};
+
+export type TUserDetails = {
+  name: string;
+  position: string;
+  education: string;
+  photoURL: string;
+  yearsOfExperience: string;
 };
 
 // creating custom statics method

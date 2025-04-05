@@ -13,7 +13,15 @@ const getCurrentUserByEmailFromDb = async (email: string) => {
   return result;
 };
 
+const updateUserIntoDb = async (userId: string, body: Partial<TUser>) => {
+  const result = await UserModel.findOneAndUpdate({ _id: userId }, body, {
+    new: true,
+  });
+  return result;
+};
+
 export const UserServices = {
   createUserInfoDb,
   getCurrentUserByEmailFromDb,
+  updateUserIntoDb,
 };

@@ -13,6 +13,22 @@ const userSchema = new Schema<TUser, UserStaticModel>({
     enum: ['user', 'instructor', 'admin'],
     default: 'user',
   },
+  isRequestPending: { type: Boolean, default: false },
+  details: {
+    type: new Schema(
+      {
+        name: { type: String },
+        position: { type: String },
+        education: { type: String },
+        photoURL: { type: String },
+        yearsOfExperience: { type: String },
+      },
+      { _id: false },
+    ),
+    default: {
+      name: '',
+    },
+  },
 });
 
 // check user exists or not
