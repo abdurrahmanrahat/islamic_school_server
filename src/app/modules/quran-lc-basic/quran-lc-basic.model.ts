@@ -4,7 +4,7 @@ import { TQuranLCBasic } from './quran-lc-basic.interface';
 const QuranLCBasicSchema = new Schema<TQuranLCBasic>(
   {
     studentName: { type: String, required: true },
-    studentEmail: { type: String, required: true, unique: true },
+    studentEmail: { type: String, required: true },
     studentGender: { type: String, enum: ['male', 'female'], required: true },
     dateOfBirth: { type: String, required: true },
     profession: { type: String, required: true },

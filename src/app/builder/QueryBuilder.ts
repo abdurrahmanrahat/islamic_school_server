@@ -44,9 +44,14 @@ class QueryBuilder<T> {
     Object.keys(queryObj).forEach((key) => {
       const value = queryObj[key];
 
-      if (typeof value === 'string') {
-        // Using regex with 'i' for case-insensitive search
-        queryObj[key] = { $regex: new RegExp(value, 'i') };
+      // Convert "true"/"false" string to boolean
+      if (value === 'true') {
+        queryObj[key] = true;
+      } else if (value === 'false') {
+        queryObj[key] = false;
+      } else if (typeof value === 'string') {
+        // Default case: treat as case-insensitive regex for strings
+        queryObj[key] = { $regex: `^${value}$`, $options: 'i' };
       }
     });
 
