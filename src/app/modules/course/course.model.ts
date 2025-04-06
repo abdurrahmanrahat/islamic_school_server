@@ -38,6 +38,27 @@ const CourseSchema = new Schema<TCourse>(
         'At least one tag is required',
       ],
     },
+    courseInstructors: {
+      type: [String],
+      required: [true, 'Course instructors are required'],
+      validate: [
+        (val: string[]) => val.length > 0,
+        'At least one instructor is required',
+      ],
+    },
+    courseWhatsAppGroupLinkBoys: {
+      type: String,
+      required: [true, 'Boys WhatsApp group link is required'],
+    },
+    courseWhatsAppGroupLinkGirls: {
+      type: String,
+      required: [true, 'Girls WhatsApp group link is required'],
+    },
+    courseType: {
+      type: String,
+      required: [true, 'Course type is required'],
+      enum: ['live', 'recorded'],
+    },
     averageRating: {
       type: Number,
       default: 0,

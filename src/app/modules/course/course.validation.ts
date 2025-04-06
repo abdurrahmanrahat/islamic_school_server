@@ -17,6 +17,18 @@ const createCourseValidationSchema = z.object({
     courseTags: z
       .array(z.string().min(1, { message: 'Tag cannot be empty' }))
       .min(1, { message: 'At least one tag is required' }),
+    courseInstructors: z
+      .array(z.string().min(1, { message: 'Instructor cannot be empty' }))
+      .min(1, { message: 'At least one instructor is required' }),
+    courseWhatsAppGroupLinkBoys: z
+      .string()
+      .min(1, { message: 'WhatsApp group link (boys) is required' }),
+    courseWhatsAppGroupLinkGirls: z
+      .string()
+      .min(1, { message: 'WhatsApp group link (girls) is required' }),
+    courseType: z.enum(['live', 'recorded'], {
+      required_error: 'Course type is required',
+    }),
   }),
 });
 
@@ -50,6 +62,19 @@ const updateCourseValidationSchema = z.object({
       .array(z.string().min(1, { message: 'Tag cannot be empty' }))
       .min(1, { message: 'At least one tag is required' })
       .optional(),
+    courseInstructors: z
+      .array(z.string().min(1, { message: 'Instructor cannot be empty' }))
+      .min(1, { message: 'At least one instructor is required' })
+      .optional(),
+    courseWhatsAppGroupLinkBoys: z
+      .string()
+      .min(1, { message: 'WhatsApp group link (boys) is required' })
+      .optional(),
+    courseWhatsAppGroupLinkGirls: z
+      .string()
+      .min(1, { message: 'WhatsApp group link (girls) is required' })
+      .optional(),
+    courseType: z.enum(['live', 'recorded']).optional(),
   }),
 });
 

@@ -6,6 +6,10 @@ export type TCourse = {
   courseShortDescription: string;
   courseDescription: string;
   courseTags: string[];
+  courseInstructors: string[];
+  courseWhatsAppGroupLinkBoys: string;
+  courseWhatsAppGroupLinkGirls: string;
+  courseType: 'live' | 'recorded';
   totalRatings?: number;
   averageRating?: number;
   totalEnrolledStudents?: number;
