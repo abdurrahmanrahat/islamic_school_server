@@ -1,12 +1,15 @@
+import { ObjectId } from 'mongoose';
+
 export type TCourse = {
   courseTitle: string;
   courseImage: string;
   courseIntroVideo: string;
   coursePrice: string;
+  courseFeeMonthly: string;
   courseShortDescription: string;
   courseDescription: string;
   courseTags: string[];
-  courseInstructors: string[];
+  courseInstructors: ObjectId[];
   courseWhatsAppGroupLinkBoys: string;
   courseWhatsAppGroupLinkGirls: string;
   courseType: 'live' | 'recorded';

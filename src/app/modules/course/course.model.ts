@@ -18,7 +18,11 @@ const CourseSchema = new Schema<TCourse>(
     },
     coursePrice: {
       type: String,
-      required: [true, 'Course price is required'],
+      required: [true, 'Course fee is required'],
+    },
+    courseFeeMonthly: {
+      type: String,
+      required: [true, 'Course monthly fee is required'],
     },
     courseShortDescription: {
       type: String,
@@ -39,12 +43,9 @@ const CourseSchema = new Schema<TCourse>(
       ],
     },
     courseInstructors: {
-      type: [String],
+      type: [Schema.Types.ObjectId],
+      ref: 'User',
       required: [true, 'Course instructors are required'],
-      validate: [
-        (val: string[]) => val.length > 0,
-        'At least one instructor is required',
-      ],
     },
     courseWhatsAppGroupLinkBoys: {
       type: String,

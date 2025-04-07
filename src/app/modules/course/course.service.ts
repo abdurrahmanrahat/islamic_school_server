@@ -14,7 +14,9 @@ const getCoursesFromDb = async (query: Record<string, unknown>) => {
     .filter()
     .pagination();
 
-  const data = await courseQuery.modelQuery.sort({ createdAt: -1 });
+  const data = await courseQuery.modelQuery
+    .sort({ createdAt: -1 })
+    .populate('courseInstructors');
 
   // For counting total documents except pagination.
   const courseQueryWithoutPagination = new QueryBuilder(Course.find(), query)
@@ -27,7 +29,9 @@ const getCoursesFromDb = async (query: Record<string, unknown>) => {
 };
 
 const getSingleCourseFromDb = async (courseId: string) => {
-  const result = await Course.findOne({ _id: courseId });
+  const result = await Course.findOne({ _id: courseId }).populate(
+    'courseInstructors',
+  );
   return result;
 };
 

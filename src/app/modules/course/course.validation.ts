@@ -7,7 +7,10 @@ const createCourseValidationSchema = z.object({
     courseIntroVideo: z
       .string()
       .min(1, { message: 'Course intro video is required' }),
-    coursePrice: z.string().min(1, { message: 'Course price is required' }),
+    coursePrice: z.string().min(1, { message: 'Course fee is required' }),
+    courseFeeMonthly: z
+      .string()
+      .min(1, { message: 'Course monthly fee is required' }),
     courseShortDescription: z
       .string()
       .min(1, { message: 'Course short description is required' }),
@@ -48,7 +51,11 @@ const updateCourseValidationSchema = z.object({
       .optional(),
     coursePrice: z
       .string()
-      .min(1, { message: 'Course price is required' })
+      .min(1, { message: 'Course fee is required' })
+      .optional(),
+    courseFeeMonthly: z
+      .string()
+      .min(1, { message: 'Course monthly fee is required' })
       .optional(),
     courseShortDescription: z
       .string()
