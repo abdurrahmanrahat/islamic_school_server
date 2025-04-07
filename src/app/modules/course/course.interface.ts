@@ -6,6 +6,7 @@ export type TCourse = {
   courseIntroVideo: string;
   coursePrice: string;
   courseFeeMonthly: string;
+  courseCurrentBatch: string;
   courseShortDescription: string;
   courseDescription: string;
   courseTags: string[];

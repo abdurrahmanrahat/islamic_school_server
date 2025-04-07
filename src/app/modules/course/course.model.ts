@@ -24,6 +24,10 @@ const CourseSchema = new Schema<TCourse>(
       type: String,
       required: [true, 'Course monthly fee is required'],
     },
+    courseCurrentBatch: {
+      type: String,
+      required: [true, 'Course batch is required'],
+    },
     courseShortDescription: {
       type: String,
       required: [true, 'Course short description is required'],
