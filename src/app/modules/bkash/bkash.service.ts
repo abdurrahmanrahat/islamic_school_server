@@ -109,14 +109,16 @@ const useRefreshToken = async (refreshToken: string): Promise<string> => {
 const createPayment = async (
   amount: number,
   orderId: string,
-  studentRegisterId: string,
+  paymentForId: string,
+  paymentSuccessURL: string,
+  paymentFailedURL: string,
 ) => {
   const token = await getValidToken();
 
   const payload = {
     mode: '0011',
     payerReference: ' ',
-    callbackURL: `${config.backed_live_url}/bkash/callback?studentRegisterId=${studentRegisterId}`,
+    callbackURL: `${config.backed_live_url}/bkash/callback?paymentForId=${paymentForId}&paymentSuccessURL=${paymentSuccessURL}&paymentFailedURL=${paymentFailedURL}&amount=${amount}`,
     merchantAssociationInfo: 'MI05MID54RF09123456One',
     amount: amount,
     currency: 'BDT',

@@ -13,7 +13,11 @@ const EnrolledCourseSchema = new Schema<TEnrolledCourse>(
       ref: 'Course',
       required: true,
     },
-    totalCourseFeeGiven: {
+    batchNo: {
+      type: String,
+      required: [true, 'Batch no is required'],
+    },
+    totalCourseFeePaid: {
       type: Number,
       default: 0,
     },
@@ -25,6 +29,10 @@ const EnrolledCourseSchema = new Schema<TEnrolledCourse>(
             required: true,
           },
           date: {
+            type: String,
+            required: true,
+          },
+          paymentID: {
             type: String,
             required: true,
           },

@@ -3,7 +3,8 @@ import { ObjectId } from 'mongoose';
 export type TEnrolledCourse = {
   user: ObjectId;
   course: ObjectId;
-  totalCourseFeeGiven?: number;
+  batchNo: string;
+  totalCourseFeePaid?: number;
   courseFeeHistory?: TEnrolledCourseFeeHistory[];
   paymentStatus?: 'pending' | 'in-progress' | 'completed';
 };
@@ -11,4 +12,5 @@ export type TEnrolledCourse = {
 export type TEnrolledCourseFeeHistory = {
   amount: number;
   date: string;
+  paymentID: string;
 };

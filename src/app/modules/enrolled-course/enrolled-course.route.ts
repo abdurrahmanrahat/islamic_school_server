@@ -16,6 +16,10 @@ router.post(
 
 // Route to get all enrolled courses
 router.get('/', EnrolledCourseControllers.getAllEnrolledCourses);
+router.get(
+  '/email/:studentEmail',
+  EnrolledCourseControllers.getAllEnrolledCoursesByEmail,
+);
 
 // Route to get single enrolled course
 router.get(

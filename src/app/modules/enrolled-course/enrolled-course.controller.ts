@@ -33,6 +33,24 @@ const getAllEnrolledCourses = catchAsync(
   },
 );
 
+const getAllEnrolledCoursesByEmail = catchAsync(
+  async (req: Request, res: Response) => {
+    const { studentEmail } = req.params;
+
+    const result = await EnrolledCourseServices.getEnrolledCoursesByEmailFromDb(
+      studentEmail,
+      req.query,
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'All enrolled courses retrieved successfully',
+      data: result,
+    });
+  },
+);
+
 const getSingleEnrolledCourse = catchAsync(
   async (req: Request, res: Response) => {
     const { enrolledCourseId } = req.params;
@@ -84,6 +102,7 @@ const deleteEnrolledCourse = catchAsync(async (req: Request, res: Response) => {
 export const EnrolledCourseControllers = {
   createEnrolledCourse,
   getAllEnrolledCourses,
+  getAllEnrolledCoursesByEmail,
   getSingleEnrolledCourse,
   updateEnrolledCourse,
   deleteEnrolledCourse,

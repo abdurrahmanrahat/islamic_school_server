@@ -11,7 +11,10 @@ const createUserInfoDb = async (user: TUser) => {
 
 // get
 const getUsersFromDb = async (query: Record<string, unknown>) => {
-  const userQuery = new QueryBuilder(UserModel.find(), query)
+  const userQuery = new QueryBuilder(
+    UserModel.find().select('-password'),
+    query,
+  )
     .search(userSearchableFields)
     .filter();
   // .pagination();
@@ -30,7 +33,7 @@ const getUsersFromDb = async (query: Record<string, unknown>) => {
 
 // get
 const getCurrentUserByEmailFromDb = async (email: string) => {
-  const result = await UserModel.findOne({ email });
+  const result = await UserModel.findOne({ email }).select('-password');
   return result;
 };
 

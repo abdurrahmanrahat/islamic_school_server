@@ -31,12 +31,21 @@ const getSinglePayment = catchAsync(async (req: Request, res: Response) => {
   const { paymentID } = req.params;
   const result = await PaymentServices.getSinglePaymentFromDb(paymentID);
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Payment retrieved successfully',
-    data: result,
-  });
+  if (result) {
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Payment retrieved successfully',
+      data: result,
+    });
+  } else {
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: false,
+      message: 'Invalid paymentID!',
+      data: result,
+    });
+  }
 });
 
 const updatePayment = catchAsync(async (req: Request, res: Response) => {
