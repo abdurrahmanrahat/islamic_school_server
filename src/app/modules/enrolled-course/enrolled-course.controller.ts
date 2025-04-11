@@ -21,7 +21,6 @@ const createEnrolledCourse = catchAsync(async (req: Request, res: Response) => {
 const getAllEnrolledCourses = catchAsync(
   async (req: Request, res: Response) => {
     const { courseType, ...restQuery } = req.query;
-    console.log(req.query);
 
     // Force courseType to string if it's a single value
     const finalCourseType =
