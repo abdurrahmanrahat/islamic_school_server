@@ -40,48 +40,48 @@ const createEnrolledCourseIntoDb = async (payload: TEnrolledCourse) => {
   session.endSession();
 };
 
-const getEnrolledCoursesFromDb = async (query: Record<string, unknown>) => {
-  const enrolledQuery = new QueryBuilder(EnrolledCourse.find(), query)
+const getEnrolledCoursesFromDb = async (
+  courseType: string | undefined,
+  restQuery: Record<string, unknown>,
+) => {
+  const enrolledQuery = new QueryBuilder(EnrolledCourse.find(), restQuery)
     .search(enrolledCourseSearchableFields)
     .filter();
   // .pagination();
 
-  const data = await enrolledQuery.modelQuery
+  // Apply populate with match for courseType
+  const dataWithCourseMatch = await enrolledQuery.modelQuery
     .sort({ createdAt: -1 })
     .populate({
       path: 'user',
-      select: '-password', // exclude password
+      select: '-password',
     })
     .populate({
       path: 'course',
+      match: courseType ? { courseType } : {}, // <-- filter here
       populate: {
         path: 'courseInstructors',
-        select: 'name details', // select specific fields from user
+        select: 'name details',
       },
     });
 
-  const enrolledQueryWithoutPagination = new QueryBuilder(
-    EnrolledCourse.find(),
-    query,
-  )
-    .search(enrolledCourseSearchableFields)
-    .filter();
+  // Remove items where course doesn't match (filtered out during populate)
+  const filteredData = dataWithCourseMatch.filter((doc) => doc.course !== null);
 
-  const document = await enrolledQueryWithoutPagination.modelQuery;
-  const totalCount = document?.length;
+  // Recalculate total count based on filtered results
+  const totalCount = filteredData.length;
 
-  return { data, totalCount };
+  return { data: filteredData, totalCount };
 };
 
 const getEnrolledCoursesByEmailFromDb = async (
   studentEmail: string,
+  courseType: string | undefined,
   query: Record<string, unknown>,
 ) => {
-  // Main query with pagination
   const enrolledQuery = new QueryBuilder(EnrolledCourse.find(), query)
     .search(enrolledCourseSearchableFields)
-    .filter()
-    .pagination();
+    .filter();
 
   const populatedData = await enrolledQuery.modelQuery
     .sort({ createdAt: -1 })
@@ -92,16 +92,17 @@ const getEnrolledCoursesByEmailFromDb = async (
     })
     .populate({
       path: 'course',
+      match: courseType ? { courseType } : {},
       populate: {
         path: 'courseInstructors',
         select: 'name details',
       },
     });
 
-  // Filter out results where user didn't match email
-  const filteredData = populatedData.filter((item) => item.user !== null);
+  const filteredData = populatedData.filter(
+    (item) => item.user !== null && item.course !== null,
+  );
 
-  // Count documents (filtered, but without pagination)
   const enrolledQueryWithoutPagination = new QueryBuilder(
     EnrolledCourse.find(),
     query,
@@ -109,15 +110,19 @@ const getEnrolledCoursesByEmailFromDb = async (
     .search(enrolledCourseSearchableFields)
     .filter();
 
-  const rawUnpaginatedData =
-    await enrolledQueryWithoutPagination.modelQuery.populate({
+  const rawUnpaginatedData = await enrolledQueryWithoutPagination.modelQuery
+    .populate({
       path: 'user',
       match: { email: studentEmail },
       select: '-password',
+    })
+    .populate({
+      path: 'course',
+      match: courseType ? { courseType } : {},
     });
 
   const filteredCount = rawUnpaginatedData.filter(
-    (item) => item.user !== null,
+    (item) => item.user !== null && item.course !== null,
   ).length;
 
   return {

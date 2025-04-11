@@ -20,8 +20,16 @@ const createEnrolledCourse = catchAsync(async (req: Request, res: Response) => {
 
 const getAllEnrolledCourses = catchAsync(
   async (req: Request, res: Response) => {
+    const { courseType, ...restQuery } = req.query;
+    console.log(req.query);
+
+    // Force courseType to string if it's a single value
+    const finalCourseType =
+      typeof courseType === 'string' ? courseType : undefined;
+
     const result = await EnrolledCourseServices.getEnrolledCoursesFromDb(
-      req.query,
+      finalCourseType,
+      restQuery,
     );
 
     sendResponse(res, {
@@ -36,10 +44,16 @@ const getAllEnrolledCourses = catchAsync(
 const getAllEnrolledCoursesByEmail = catchAsync(
   async (req: Request, res: Response) => {
     const { studentEmail } = req.params;
+    const { courseType, ...restQuery } = req.query;
+
+    // Force courseType to string if it's a single value
+    const finalCourseType =
+      typeof courseType === 'string' ? courseType : undefined;
 
     const result = await EnrolledCourseServices.getEnrolledCoursesByEmailFromDb(
       studentEmail,
-      req.query,
+      finalCourseType,
+      restQuery,
     );
 
     sendResponse(res, {
