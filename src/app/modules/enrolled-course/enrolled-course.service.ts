@@ -13,6 +13,18 @@ const createEnrolledCourseIntoDb = async (payload: TEnrolledCourse) => {
     throw new AppError(httpStatus.NOT_FOUND, 'Course is not found!');
   }
 
+  const isAlreadyEnrolled = await EnrolledCourse.findOne({
+    user: payload.user,
+    course: payload.course,
+  });
+
+  if (isAlreadyEnrolled) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      'You have already enrolled in the course!',
+    );
+  }
+
   const session = await EnrolledCourse.startSession();
 
   try {
