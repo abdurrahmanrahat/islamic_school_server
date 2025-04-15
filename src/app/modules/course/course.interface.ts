@@ -14,6 +14,7 @@ export type TCourse = {
   courseWhatsAppGroupLinkBoys: string;
   courseWhatsAppGroupLinkGirls: string;
   courseType: 'live' | 'recorded';
+  isCourseOngoing: 'yes' | 'no';
   totalRatings?: number;
   averageRating?: number;
   totalEnrolledStudents?: number;

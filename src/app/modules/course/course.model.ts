@@ -64,6 +64,11 @@ const CourseSchema = new Schema<TCourse>(
       required: [true, 'Course type is required'],
       enum: ['live', 'recorded'],
     },
+    isCourseOngoing: {
+      type: String,
+      required: [true, 'Course continue is required'],
+      enum: ['yes', 'no'],
+    },
     averageRating: {
       type: Number,
       default: 0,

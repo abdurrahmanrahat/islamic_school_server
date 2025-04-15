@@ -35,6 +35,9 @@ const createCourseValidationSchema = z.object({
     courseType: z.enum(['live', 'recorded'], {
       required_error: 'Course type is required',
     }),
+    isCourseOngoing: z.enum(['yes', 'no'], {
+      required_error: 'Course ongoing is required',
+    }),
   }),
 });
 
@@ -89,6 +92,7 @@ const updateCourseValidationSchema = z.object({
       .min(1, { message: 'WhatsApp group link (girls) is required' })
       .optional(),
     courseType: z.enum(['live', 'recorded']).optional(),
+    isCourseOngoing: z.enum(['yes', 'no']).optional(),
   }),
 });
 
