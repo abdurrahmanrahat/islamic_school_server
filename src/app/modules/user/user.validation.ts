@@ -18,7 +18,7 @@ const userDetailsSchema = z.object({
   whatsAppNumber: z.string().optional(),
   profession: z.string().optional(),
   gender: z.string().optional(),
-  dateOfBirth: z.string().optional(),
+  // dateOfBirth: z.string().optional(),
   address: z.string().optional(),
 });
 

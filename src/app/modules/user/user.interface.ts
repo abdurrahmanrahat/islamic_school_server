@@ -27,7 +27,7 @@ export type TUserDetails = {
   whatsAppNumber: string;
   profession: string;
   gender: string;
-  dateOfBirth: string;
+  // dateOfBirth: string;
   address: string;
 };
 
