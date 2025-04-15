@@ -12,9 +12,14 @@ const createUserValidationSchema = z.object({
 const userDetailsSchema = z.object({
   name: z.string().optional(),
   position: z.string().optional(),
+  yearsOfExperience: z.string().optional(),
   education: z.string().optional(),
   photoURL: z.string().optional(),
-  yearsOfExperience: z.string().optional(),
+  whatsAppNumber: z.string().optional(),
+  profession: z.string().optional(),
+  gender: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  address: z.string().optional(),
 });
 
 const updateUserValidationSchema = z.object({

@@ -11,12 +11,24 @@ export type TUser = {
   details?: Partial<TUserDetails> | object;
 };
 
+// export type TUserDetails = {
+//   name: string;
+//   position: string;
+//   education: string;
+//   photoURL: string;
+//   yearsOfExperience: string;
+// };
 export type TUserDetails = {
   name: string;
   position: string;
+  yearsOfExperience: string;
   education: string;
   photoURL: string;
-  yearsOfExperience: string;
+  whatsAppNumber: string;
+  profession: string;
+  gender: string;
+  dateOfBirth: string;
+  address: string;
 };
 
 // creating custom statics method
