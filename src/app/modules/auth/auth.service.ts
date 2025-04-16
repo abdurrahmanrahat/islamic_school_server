@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import config from '../../config';
 import { UserModel } from '../user/user.model';
 import { TLoginUser } from './auth.interface';
@@ -53,7 +54,7 @@ const googleLoginIntoDb = async (code: string) => {
     name,
     email,
     phone: 'N/A',
-    password: '111111',
+    password: uuidv4(),
     'details.photoURL': picture,
   };
 
