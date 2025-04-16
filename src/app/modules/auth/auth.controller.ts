@@ -17,6 +17,20 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const googleLogin = catchAsync(async (req: Request, res: Response) => {
+  const code = req.query.code;
+
+  const result = await AuthServices.googleLoginIntoDb(code as string);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User login successfully',
+    data: result,
+  });
+});
+
 export const AuthControllers = {
   loginUser,
+  googleLogin,
 };
