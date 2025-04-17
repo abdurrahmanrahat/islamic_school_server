@@ -19,7 +19,7 @@ const getUsersFromDb = async (query: Record<string, unknown>) => {
     .filter();
   // .pagination();
 
-  const data = await userQuery.modelQuery.sort({ createdAt: -1 });
+  const data = await userQuery.modelQuery;
 
   // for count document except pagination.
   const userQueryWithoutPagination = new QueryBuilder(
@@ -69,4 +69,4 @@ export const UserServices = {
   deleteUserIntoDb,
 };
 
-// add { isDeleted: false } in every find method, whether it all or single or some
+// update interface if not the property isDeleted and add { isDeleted: false } in every find method, whether it all or single or some
