@@ -9,6 +9,7 @@ export type TUser = {
   role: 'user' | 'instructor' | 'admin';
   isRequestPending: boolean;
   details?: Partial<TUserDetails> | object;
+  isDeleted?: boolean;
 };
 
 // export type TUserDetails = {

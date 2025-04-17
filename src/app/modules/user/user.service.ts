@@ -12,7 +12,7 @@ const createUserInfoDb = async (user: TUser) => {
 // get
 const getUsersFromDb = async (query: Record<string, unknown>) => {
   const userQuery = new QueryBuilder(
-    UserModel.find().select('-password'),
+    UserModel.find({ isDeleted: false }).select('-password'),
     query,
   )
     .search(userSearchableFields)
@@ -22,7 +22,10 @@ const getUsersFromDb = async (query: Record<string, unknown>) => {
   const data = await userQuery.modelQuery.sort({ createdAt: -1 });
 
   // for count document except pagination.
-  const userQueryWithoutPagination = new QueryBuilder(UserModel.find(), query)
+  const userQueryWithoutPagination = new QueryBuilder(
+    UserModel.find({ isDeleted: false }),
+    query,
+  )
     .search(userSearchableFields)
     .filter();
 
@@ -33,7 +36,9 @@ const getUsersFromDb = async (query: Record<string, unknown>) => {
 
 // get
 const getCurrentUserByEmailFromDb = async (email: string) => {
-  const result = await UserModel.findOne({ email }).select('-password');
+  const result = await UserModel.findOne({ email, isDeleted: false }).select(
+    '-password',
+  );
   return result;
 };
 
@@ -45,9 +50,23 @@ const updateUserIntoDb = async (userId: string, body: Partial<TUser>) => {
   return result;
 };
 
+// delete
+const deleteUserIntoDb = async (userId: string) => {
+  const result = await UserModel.findByIdAndUpdate(
+    userId,
+    { isDeleted: true },
+    { new: true },
+  );
+
+  return result;
+};
+
 export const UserServices = {
   createUserInfoDb,
   getUsersFromDb,
   getCurrentUserByEmailFromDb,
   updateUserIntoDb,
+  deleteUserIntoDb,
 };
+
+// add { isDeleted: false } in every find method, whether it all or single or some

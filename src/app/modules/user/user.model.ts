@@ -43,6 +43,10 @@ const userSchema = new Schema<TUser, UserStaticModel>({
       address: '',
     },
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // check user exists or not
