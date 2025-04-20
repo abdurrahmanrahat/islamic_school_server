@@ -9,7 +9,7 @@ const createBlogIntoDb = async (blogInfo: TBlog) => {
 };
 
 const getBlogsFromDb = async (query: Record<string, unknown>) => {
-  const blogQuery = new QueryBuilder(Blog.find(), query)
+  const blogQuery = new QueryBuilder(Blog.find({ isDeleted: false }), query)
     .search(blogSearchableFields)
     .filter()
     .pagination();
@@ -19,7 +19,10 @@ const getBlogsFromDb = async (query: Record<string, unknown>) => {
     .populate('authorDetails', '_id name email phone photoURL');
 
   // for count document except pagination.
-  const blogQueryWithoutPagination = new QueryBuilder(Blog.find(), query)
+  const blogQueryWithoutPagination = new QueryBuilder(
+    Blog.find({ isDeleted: false }),
+    query,
+  )
     .search(blogSearchableFields)
     .filter();
 
@@ -29,7 +32,7 @@ const getBlogsFromDb = async (query: Record<string, unknown>) => {
 };
 
 const getSingleBlogFromDb = async (blogId: string) => {
-  const result = await Blog.findOne({ _id: blogId }).populate(
+  const result = await Blog.findOne({ _id: blogId, isDeleted: false }).populate(
     'authorDetails',
     '_id name email phone photoURL',
   );
@@ -44,7 +47,11 @@ const updateBlogIntoDb = async (blogId: string, body: Partial<TBlog>) => {
 };
 
 const deleteBlogIntoDb = async (blogId: string) => {
-  const result = await Blog.findByIdAndDelete({ _id: blogId });
+  const result = await Blog.findByIdAndUpdate(
+    blogId,
+    { isDeleted: true },
+    { new: true },
+  );
   return result;
 };
 

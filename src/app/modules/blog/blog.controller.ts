@@ -35,12 +35,21 @@ const getSingleBlog = catchAsync(async (req: Request, res: Response) => {
 
   const result = await BlogServices.getSingleBlogFromDb(blogId);
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Single blog retrieved successfully',
-    data: result,
-  });
+  if (result) {
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single blog retrieved successfully',
+      data: result,
+    });
+  } else {
+    sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'Single blog Not found!',
+      data: result,
+    });
+  }
 });
 
 const updateBlog = catchAsync(async (req: Request, res: Response) => {
