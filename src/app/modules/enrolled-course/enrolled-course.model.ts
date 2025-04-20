@@ -45,6 +45,10 @@ const EnrolledCourseSchema = new Schema<TEnrolledCourse>(
       enum: ['pending', 'in-progress', 'completed'],
       default: 'pending',
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

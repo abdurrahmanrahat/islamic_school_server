@@ -16,6 +16,7 @@ const createEnrolledCourseIntoDb = async (payload: TEnrolledCourse) => {
   const isAlreadyEnrolled = await EnrolledCourse.findOne({
     user: payload.user,
     course: payload.course,
+    isDeleted: false,
   });
 
   if (isAlreadyEnrolled) {
@@ -56,7 +57,10 @@ const getEnrolledCoursesFromDb = async (
   courseType: string | undefined,
   restQuery: Record<string, unknown>,
 ) => {
-  const enrolledQuery = new QueryBuilder(EnrolledCourse.find(), restQuery)
+  const enrolledQuery = new QueryBuilder(
+    EnrolledCourse.find({ isDeleted: false }),
+    restQuery,
+  )
     .search(enrolledCourseSearchableFields)
     .filter();
   // .pagination();
@@ -66,11 +70,15 @@ const getEnrolledCoursesFromDb = async (
     .sort({ createdAt: -1 })
     .populate({
       path: 'user',
+      match: { isDeleted: false },
       select: '-password',
     })
     .populate({
       path: 'course',
-      match: courseType ? { courseType } : {}, // <-- filter here
+      match: {
+        ...(courseType ? { courseType } : {}),
+        isDeleted: false, // ✅ Ensures soft-deleted courses are excluded
+      },
       populate: {
         path: 'courseInstructors',
         select: 'name details',
@@ -91,7 +99,10 @@ const getEnrolledCoursesByEmailFromDb = async (
   courseType: string | undefined,
   query: Record<string, unknown>,
 ) => {
-  const enrolledQuery = new QueryBuilder(EnrolledCourse.find(), query)
+  const enrolledQuery = new QueryBuilder(
+    EnrolledCourse.find({ isDeleted: false }),
+    query,
+  )
     .search(enrolledCourseSearchableFields)
     .filter();
 
@@ -99,12 +110,15 @@ const getEnrolledCoursesByEmailFromDb = async (
     .sort({ createdAt: -1 })
     .populate({
       path: 'user',
-      match: { email: studentEmail },
+      match: { email: studentEmail, isDeleted: false },
       select: '-password',
     })
     .populate({
       path: 'course',
-      match: courseType ? { courseType } : {},
+      match: {
+        ...(courseType ? { courseType } : {}),
+        isDeleted: false, // ✅ Ensures soft-deleted courses are excluded
+      },
       populate: {
         path: 'courseInstructors',
         select: 'name details',
@@ -116,7 +130,7 @@ const getEnrolledCoursesByEmailFromDb = async (
   );
 
   const enrolledQueryWithoutPagination = new QueryBuilder(
-    EnrolledCourse.find(),
+    EnrolledCourse.find({ isDeleted: false }),
     query,
   )
     .search(enrolledCourseSearchableFields)
@@ -144,7 +158,10 @@ const getEnrolledCoursesByEmailFromDb = async (
 };
 
 const getSingleEnrolledCourseFromDb = async (enrolledCourseId: string) => {
-  const result = await EnrolledCourse.findOne({ _id: enrolledCourseId })
+  const result = await EnrolledCourse.findOne({
+    _id: enrolledCourseId,
+    isDeleted: false,
+  })
     .populate({
       path: 'user',
       select: '-password', // exclude password
@@ -164,7 +181,7 @@ const updateEnrolledCourseIntoDb = async (
   body: Partial<TEnrolledCourse>,
 ) => {
   const result = await EnrolledCourse.findOneAndUpdate(
-    { _id: enrolledCourseId },
+    { _id: enrolledCourseId, isDeleted: false },
     body,
     { new: true },
   );
@@ -186,11 +203,16 @@ const deleteEnrolledCourseFromDb = async (enrolledCourseId: string) => {
     }
 
     // Step 2: Delete the enrolled course
-    await EnrolledCourse.findByIdAndDelete(enrolledCourseId).session(session);
+    await EnrolledCourse.findByIdAndUpdate(
+      enrolledCourseId,
+      { isDeleted: true },
+      { session },
+    );
 
     // Step 3: Recalculate total enrolled students for the course
     const enrolledCourseCount = await EnrolledCourse.countDocuments({
       course: enrolledCourse.course,
+      isDeleted: false,
     }).session(session);
 
     await Course.updateOne(

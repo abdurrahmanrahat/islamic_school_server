@@ -35,12 +35,21 @@ const getSingleCourse = catchAsync(async (req: Request, res: Response) => {
 
   const result = await CourseServices.getSingleCourseFromDb(courseId);
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Single course retrieved successfully',
-    data: result,
-  });
+  if (result) {
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single course retrieved successfully',
+      data: result,
+    });
+  } else {
+    sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'Course not found',
+      data: result,
+    });
+  }
 });
 
 const updateCourse = catchAsync(async (req: Request, res: Response) => {

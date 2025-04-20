@@ -27,6 +27,10 @@ const BlogSchema = new Schema<TBlog>(
       ref: 'User',
       required: [true, 'Author details are required'],
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );

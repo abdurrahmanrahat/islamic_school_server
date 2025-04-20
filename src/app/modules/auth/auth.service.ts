@@ -37,7 +37,13 @@ const loginUserIntoDb = async (payload: TLoginUser) => {
     config.jwt_access_expires_in as string,
   );
 
-  return accessToken;
+  const refreshToken = createJwtToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_expires_in as string,
+  );
+
+  return { accessToken, refreshToken };
 };
 
 const googleLoginIntoDb = async (code: string) => {
@@ -86,7 +92,13 @@ const googleLoginIntoDb = async (code: string) => {
     config.jwt_access_expires_in as string,
   );
 
-  return { accessToken, firstTimeLoggedIn };
+  const refreshToken = createJwtToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_expires_in as string,
+  );
+
+  return { accessToken, refreshToken, firstTimeLoggedIn };
 };
 
 export const AuthServices = {

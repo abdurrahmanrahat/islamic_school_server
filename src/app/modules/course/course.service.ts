@@ -9,7 +9,7 @@ const createCourseIntoDb = async (courseInfo: TCourse) => {
 };
 
 const getCoursesFromDb = async (query: Record<string, unknown>) => {
-  const courseQuery = new QueryBuilder(Course.find(), query)
+  const courseQuery = new QueryBuilder(Course.find({ isDeleted: false }), query)
     .search(courseSearchableFields)
     .filter()
     .pagination();
@@ -19,7 +19,10 @@ const getCoursesFromDb = async (query: Record<string, unknown>) => {
     .populate('courseInstructors');
 
   // For counting total documents except pagination.
-  const courseQueryWithoutPagination = new QueryBuilder(Course.find(), query)
+  const courseQueryWithoutPagination = new QueryBuilder(
+    Course.find({ isDeleted: false }),
+    query,
+  )
     .search(courseSearchableFields)
     .filter();
 
@@ -29,9 +32,10 @@ const getCoursesFromDb = async (query: Record<string, unknown>) => {
 };
 
 const getSingleCourseFromDb = async (courseId: string) => {
-  const result = await Course.findOne({ _id: courseId }).populate(
-    'courseInstructors',
-  );
+  const result = await Course.findOne({
+    _id: courseId,
+    isDeleted: false,
+  }).populate('courseInstructors');
   return result;
 };
 
@@ -43,7 +47,11 @@ const updateCourseIntoDb = async (courseId: string, body: Partial<TCourse>) => {
 };
 
 const deleteCourseIntoDb = async (courseId: string) => {
-  const result = await Course.findByIdAndDelete({ _id: courseId });
+  const result = await Course.findByIdAndUpdate(
+    courseId,
+    { isDeleted: true },
+    { new: true },
+  );
   return result;
 };
 

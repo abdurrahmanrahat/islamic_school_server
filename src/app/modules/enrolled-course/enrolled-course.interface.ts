@@ -7,6 +7,7 @@ export type TEnrolledCourse = {
   totalCourseFeePaid?: number;
   courseFeeHistory?: TEnrolledCourseFeeHistory[];
   paymentStatus?: 'pending' | 'in-progress' | 'completed';
+  isDeleted?: boolean;
 };
 
 export type TEnrolledCourseFeeHistory = {
