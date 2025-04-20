@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../config';
+import { USER_ROLE } from './user.constant';
 import { TUser, UserStaticModel } from './user.interface';
 
 const userSchema = new Schema<TUser, UserStaticModel>({
@@ -10,8 +11,8 @@ const userSchema = new Schema<TUser, UserStaticModel>({
   password: { type: String, required: true },
   role: {
     type: String,
-    enum: ['user', 'instructor', 'admin'],
-    default: 'user',
+    enum: Object.keys(USER_ROLE),
+    default: USER_ROLE.user,
   },
   isRequestPending: { type: Boolean, default: false },
   details: {

@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { Model } from 'mongoose';
+import { USER_ROLE } from './user.constant';
 
 export type TUser = {
   name: string;
   email: string;
   phone: string;
   password: string;
-  role: 'user' | 'instructor' | 'admin';
+  role: keyof typeof USER_ROLE;
   isRequestPending: boolean;
   details?: Partial<TUserDetails> | object;
   isDeleted?: boolean;
