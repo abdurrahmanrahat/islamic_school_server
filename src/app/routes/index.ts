@@ -4,6 +4,7 @@ import { BkashRoutes } from '../modules/bkash/bkash.route';
 import { BlogRoutes } from '../modules/blog/blog.route';
 import { CourseRoutes } from '../modules/course/course.route';
 import { EnrolledCourseRoutes } from '../modules/enrolled-course/enrolled-course.route';
+import { FaqRoutes } from '../modules/faq/faq.route';
 import { PaymentRoutes } from '../modules/payment/payment.route';
 import { QuranLCBasicRoutes } from '../modules/quran-lc-basic/quran-lc-basic.route';
 import { QuranLSUserRoutes } from '../modules/quran-LS-registration/quran-LS.route';
@@ -41,6 +42,10 @@ const moduleRoutes = [
   {
     path: '/blogs',
     route: BlogRoutes,
+  },
+  {
+    path: '/faqs',
+    route: FaqRoutes,
   },
   {
     path: '/courses',

@@ -16,7 +16,7 @@ const getBlogsFromDb = async (query: Record<string, unknown>) => {
 
   const data = await blogQuery.modelQuery
     .sort({ createdAt: -1 })
-    .populate('authorDetails', '_id name email phone photoURL');
+    .populate('authorDetails');
 
   // for count document except pagination.
   const blogQueryWithoutPagination = new QueryBuilder(
@@ -34,7 +34,6 @@ const getBlogsFromDb = async (query: Record<string, unknown>) => {
 const getSingleBlogFromDb = async (blogId: string) => {
   const result = await Blog.findOne({ _id: blogId, isDeleted: false }).populate(
     'authorDetails',
-    '_id name email phone photoURL',
   );
   return result;
 };
