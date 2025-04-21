@@ -25,7 +25,6 @@ const updateBlogValidationSchema = z.object({
       .array(z.string())
       .min(1, 'At least one tag is required')
       .optional(),
-    authorDetails: z.string().optional(),
   }),
 });
 

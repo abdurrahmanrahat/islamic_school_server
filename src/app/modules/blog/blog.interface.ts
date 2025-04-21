@@ -5,6 +5,6 @@ export type TBlog = {
   blogImage: string;
   blogDescription: string;
   blogTags: string[];
-  authorDetails?: Types.ObjectId;
+  authorDetails: Types.ObjectId;
   isDeleted?: boolean;
 };
