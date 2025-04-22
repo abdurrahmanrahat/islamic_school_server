@@ -16,7 +16,7 @@ const getFaqsFromDb = async (query: Record<string, unknown>) => {
 
   const data = await faqQuery.modelQuery
     .sort({ createdAt: -1 })
-    .populate('authorDetails');
+    .populate('authorDetails', '-password');
 
   // for count document except pagination
   const faqQueryWithoutPagination = new QueryBuilder(
@@ -34,6 +34,7 @@ const getFaqsFromDb = async (query: Record<string, unknown>) => {
 const getSingleFaqFromDb = async (faqId: string) => {
   const result = await Faq.findOne({ _id: faqId, isDeleted: false }).populate(
     'authorDetails',
+    '-password',
   );
   return result;
 };
