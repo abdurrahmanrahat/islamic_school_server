@@ -46,4 +46,14 @@ router.delete(
   EnrolledCourseControllers.deleteEnrolledCourse,
 );
 
+// Route to create payment for enrolled live course
+router.post(
+  '/payment',
+  EnrolledCourseControllers.createEnrolledLiveCoursePayment,
+);
+router.get(
+  '/payment/callback',
+  EnrolledCourseControllers.enrolledLiveCourseCallback,
+);
+
 export const EnrolledCourseRoutes = router;

@@ -49,10 +49,24 @@ const deleteQuranLCBasicIntoDb = async (studentId: string) => {
   return result;
 };
 
+const quranLCBasicStatusUpdateIntoDb = async (
+  studentId: string,
+  status: string,
+) => {
+  const result = await QuranLCBasic.findOneAndUpdate(
+    { _id: studentId },
+    { paymentStatus: status },
+    { new: true },
+  );
+
+  return result;
+};
+
 export const QuranLCBasicServices = {
   createQuranLCBasicIntoDb,
   getQuranLCBasicsFromDb,
   getSingleQuranLCBasicFromDb,
   updateQuranLCBasicIntoDb,
   deleteQuranLCBasicIntoDb,
+  quranLCBasicStatusUpdateIntoDb,
 };

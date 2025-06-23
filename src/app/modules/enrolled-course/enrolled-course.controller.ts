@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import config from '../../config';
 import catchAsync from '../../utils/catchAsync';
 import { sendResponse } from '../../utils/sendResponse';
+import { BkashService } from '../bkash/bkash.service';
 import { EnrolledCourseServices } from './enrolled-course.service';
 
 const createEnrolledCourse = catchAsync(async (req: Request, res: Response) => {
@@ -112,6 +114,73 @@ const deleteEnrolledCourse = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// payment api
+const createEnrolledLiveCoursePayment = catchAsync(
+  async (req: Request, res: Response) => {
+    const {
+      amount,
+      orderId,
+      paymentForId,
+      paymentSuccessURL,
+      paymentFailedURL,
+    } = req.body;
+
+    const callbackUrl = `${config.backed_live_url}/enrolled-courses/payment/callback`;
+
+    const result = await BkashService.createPayment(
+      amount,
+      orderId,
+      paymentForId,
+      paymentSuccessURL,
+      paymentFailedURL,
+      callbackUrl,
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Enrolled course payment initiated successfully',
+      data: result,
+    });
+  },
+);
+
+const enrolledLiveCourseCallback = catchAsync(
+  async (req: Request, res: Response) => {
+    const {
+      paymentID,
+      status,
+      paymentForId,
+      paymentSuccessURL,
+      paymentFailedURL,
+      amount,
+    } = req.query;
+
+    if (!paymentID) {
+      return res.redirect(`${paymentFailedURL}`); // Redirect to fail page
+    }
+
+    if (status !== 'success') {
+      return res.redirect(`${paymentFailedURL}`); // Redirect if payment failed
+    }
+
+    const result = await BkashService.callbackPayment(paymentID as string);
+
+    if (result && result.paymentID) {
+      // do database action here for success
+      await EnrolledCourseServices.enrolledLiveCourseStatusPropertiesUpdateIntoDb(
+        paymentForId as string,
+        Number(amount),
+        paymentID as string,
+      );
+
+      return res.redirect(`${paymentSuccessURL}`); // ✅ Redirect to success page
+    } else {
+      return res.redirect(`${paymentFailedURL}`); // Redirect if execution fails
+    }
+  },
+);
+
 export const EnrolledCourseControllers = {
   createEnrolledCourse,
   getAllEnrolledCourses,
@@ -119,4 +188,6 @@ export const EnrolledCourseControllers = {
   getSingleEnrolledCourse,
   updateEnrolledCourse,
   deleteEnrolledCourse,
+  createEnrolledLiveCoursePayment,
+  enrolledLiveCourseCallback,
 };

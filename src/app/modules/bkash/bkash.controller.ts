@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import config from '../../config';
 import catchAsync from '../../utils/catchAsync';
 import { sendResponse } from '../../utils/sendResponse';
 import { BkashService } from './bkash.service';
@@ -8,12 +9,15 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
   const { amount, orderId, paymentForId, paymentSuccessURL, paymentFailedURL } =
     req.body;
 
+  const callbackUrl = `${config.backed_live_url}/bkash/callback`;
+
   const result = await BkashService.createPayment(
     amount,
     orderId,
     paymentForId,
     paymentSuccessURL,
     paymentFailedURL,
+    callbackUrl,
   );
 
   sendResponse(res, {

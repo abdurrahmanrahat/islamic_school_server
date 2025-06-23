@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import config from '../../config';
 import catchAsync from '../../utils/catchAsync';
 import { sendResponse } from '../../utils/sendResponse';
+import { BkashService } from '../bkash/bkash.service';
 import { QuranLCBasicServices } from './quran-lc-basic.service';
 
 const createQuranLCBasic = catchAsync(async (req: Request, res: Response) => {
@@ -67,10 +69,77 @@ const deleteQuranLCBasic = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// payment api
+const createQuranLCBasicPayment = catchAsync(
+  async (req: Request, res: Response) => {
+    const {
+      amount,
+      orderId,
+      paymentForId,
+      paymentSuccessURL,
+      paymentFailedURL,
+    } = req.body;
+
+    const callbackUrl = `${config.backed_live_url}/quran-lc-basic/payment/callback`;
+
+    const result = await BkashService.createPayment(
+      amount,
+      orderId,
+      paymentForId,
+      paymentSuccessURL,
+      paymentFailedURL,
+      callbackUrl,
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Quran lC basic payment initiated successfully',
+      data: result,
+    });
+  },
+);
+
+const quranLCBasicCallback = catchAsync(async (req: Request, res: Response) => {
+  const {
+    paymentID,
+    status,
+    paymentForId,
+    paymentSuccessURL,
+    paymentFailedURL,
+    amount,
+  } = req.query;
+  console.log('amount', amount);
+
+  if (!paymentID) {
+    return res.redirect(`${paymentFailedURL}`); // Redirect to fail page
+  }
+
+  if (status !== 'success') {
+    return res.redirect(`${paymentFailedURL}`); // Redirect if payment failed
+  }
+
+  const result = await BkashService.callbackPayment(paymentID as string);
+
+  if (result && result.paymentID) {
+    // do database action here for success
+    await QuranLCBasicServices.quranLCBasicStatusUpdateIntoDb(
+      paymentForId as string,
+      'success',
+    );
+
+    return res.redirect(`${paymentSuccessURL}`); // ✅ Redirect to success page
+  } else {
+    return res.redirect(`${paymentFailedURL}`); // Redirect if execution fails
+  }
+});
+
 export const QuranLCBasicControllers = {
   createQuranLCBasic,
   getAllQuranLCBasic,
   getSingleQuranLCBasic,
   updateQuranLCBasic,
   deleteQuranLCBasic,
+  createQuranLCBasicPayment,
+  quranLCBasicCallback,
 };

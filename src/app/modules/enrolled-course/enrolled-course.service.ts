@@ -1,6 +1,8 @@
 import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
+import { convertBengaliToEnglishNumber } from '../../utils/conversion';
+import { TCourse } from '../course/course.interface';
 import { Course } from '../course/course.model';
 import { enrolledCourseSearchableFields } from './enrolled-course.constant';
 import { TEnrolledCourse } from './enrolled-course.interface';
@@ -35,6 +37,7 @@ const createEnrolledCourseIntoDb = async (payload: TEnrolledCourse) => {
 
     const enrolledCourseCount = await EnrolledCourse.countDocuments({
       course: course._id,
+      isDeleted: false,
     }).session(session);
 
     await Course.updateOne(
@@ -231,6 +234,54 @@ const deleteEnrolledCourseFromDb = async (enrolledCourseId: string) => {
   session.endSession();
 };
 
+const enrolledLiveCourseStatusPropertiesUpdateIntoDb = async (
+  enrolledCourseId: string,
+  amount: number,
+  paymentID: string,
+) => {
+  // Step 1: Fetch the course
+  const enrolledCourse = await EnrolledCourse.findById(
+    enrolledCourseId,
+  ).populate<{ course: TCourse }>('course');
+
+  if (!enrolledCourse) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Enrolled course not found!');
+  }
+
+  // step 2: course price
+  const coursePrice = Number(
+    convertBengaliToEnglishNumber(enrolledCourse?.course?.coursePrice || '০'),
+  );
+
+  const existingPaid = Number(enrolledCourse.totalCourseFeePaid || 0);
+  const newTotalPaid = existingPaid + amount;
+
+  const isFullyPaid = newTotalPaid >= coursePrice;
+
+  // Step 3: Push new history entry
+  const newHistory = [
+    ...(enrolledCourse.courseFeeHistory || []),
+    {
+      amount,
+      date: new Date().toISOString(),
+      paymentID,
+    },
+  ];
+
+  // Step 4: Update DB
+  const result = await EnrolledCourse.findByIdAndUpdate(
+    enrolledCourseId,
+    {
+      totalCourseFeePaid: newTotalPaid,
+      paymentStatus: isFullyPaid ? 'completed' : 'in-progress',
+      courseFeeHistory: newHistory,
+    },
+    { new: true },
+  );
+
+  return result;
+};
+
 export const EnrolledCourseServices = {
   createEnrolledCourseIntoDb,
   getEnrolledCoursesFromDb,
@@ -238,4 +289,5 @@ export const EnrolledCourseServices = {
   getSingleEnrolledCourseFromDb,
   updateEnrolledCourseIntoDb,
   deleteEnrolledCourseFromDb,
+  enrolledLiveCourseStatusPropertiesUpdateIntoDb,
 };

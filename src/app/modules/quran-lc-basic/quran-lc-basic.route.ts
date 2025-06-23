@@ -30,4 +30,7 @@ router.delete(
   QuranLCBasicControllers.deleteQuranLCBasic,
 );
 
+router.post('/payment', QuranLCBasicControllers.createQuranLCBasicPayment);
+router.get('/payment/callback', QuranLCBasicControllers.quranLCBasicCallback);
+
 export const QuranLCBasicRoutes = router;

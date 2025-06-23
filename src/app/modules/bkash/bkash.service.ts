@@ -112,13 +112,14 @@ const createPayment = async (
   paymentForId: string,
   paymentSuccessURL: string,
   paymentFailedURL: string,
+  callbackUrl: string,
 ) => {
   const token = await getValidToken();
 
   const payload = {
     mode: '0011',
     payerReference: ' ',
-    callbackURL: `${config.backed_live_url}/bkash/callback?paymentForId=${paymentForId}&paymentSuccessURL=${paymentSuccessURL}&paymentFailedURL=${paymentFailedURL}&amount=${amount}`,
+    callbackURL: `${callbackUrl}?paymentForId=${paymentForId}&paymentSuccessURL=${paymentSuccessURL}&paymentFailedURL=${paymentFailedURL}&amount=${amount}`,
     merchantAssociationInfo: 'MI05MID54RF09123456One',
     amount: amount,
     currency: 'BDT',
